@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 public class RoleMstDto {
     private int roleId;
+
     private String roleName;
 
     private LocalDateTime createDate;
