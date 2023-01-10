@@ -31,13 +31,13 @@ public class AccountApi {
 
         return ResponseEntity
                 .created(URI.create("/api/account/user/" + user.getUserId()))
-                .body(new CMRespDto<>("Create a new User", user));
+                .body(new CMRespDto<>(HttpStatus.CREATED.value(), "Create a new User", user));
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUser(@PathVariable int userId) {
         return ResponseEntity
                 .ok()
-                .body(new CMRespDto<>("Success", accountService.getUser(userId)));
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Success", accountService.getUser(userId)));
     }
 }

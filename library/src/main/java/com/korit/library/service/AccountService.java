@@ -23,22 +23,21 @@ public class AccountService {
         return userDto;
     }
 
-    public void duplicateUsername(String username){
+    public void duplicateUsername(String username) {
         UserDto user = accountRepository.findUserByUsername(username);
         if(user != null) {
             Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("username", "이미 존재하는 사용자의 이름입니다.");
+            errorMap.put("username", "이미 존재하는 사용자이름입니다.");
+
             throw new CustomValidationException(errorMap);
         }
-//        log.info("{}", user);
-//        log.info("ROLE_MST{}", user.getRoleDtlDto().get(0));
-//        log.info("ROLE_MST{}", user.getRoleDtlDto().get(1));
     }
 
     public void compareToPassword(String password, String repassword) {
-        if(!password.equals(repassword)) {
+        if(!password.equals(repassword)){
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("repassword", "비밀번호가 일치하지 않습니다.");
+
             throw new CustomValidationException(errorMap);
         }
     }

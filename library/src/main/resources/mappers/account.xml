@@ -19,7 +19,6 @@
         <result property="roleName" column="role_name"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
-
     </resultMap>
 
     <resultMap id="roleDtl" type="com.korit.library.web.dto.RoleDtlDto">
@@ -31,27 +30,25 @@
         <collection property="roleMstDto" resultMap="roleMst"></collection>
     </resultMap>
 
-
     <select id="findUserByUsername" parameterType="String" resultMap="userMst">
         select
-            um.user_id,
-            um.username,
-            um.password,
-            um.name,
-            um.email,
+        um.user_id,
+        um.username,
+        um.password,
+        um.name,
+        um.email,
 
-            rd.role_id,
-            rm.role_name,
+        rd.role_id,
+        rm.role_name,
 
-            um.create_date,
-            um.update_date
+        um.create_date,
+        um.update_date
         from
-            user_mst um
-            left outer join role_dtl rd on(rd.user_id = um.user_id)
-            left outer join role_mst rm on(rm.role_id = rd.role_id)
+        user_mst um
+        left outer join role_dtl rd on(rd.user_id = um.user_id)
+        left outer join role_mst rm on(rm.role_id = rd.role_id)
         where
-            um.username = #{username}
-
+        um.username = #{username}
     </select>
     <select id="findUserByUserId" parameterType="Integer" resultMap="userMst">
         select
@@ -80,9 +77,8 @@
             keyProperty="userId">
         insert into user_mst
         values (0, #{username}, #{password}, #{name}, #{email}, now(), now())
-
     </insert>
-    
+
     <insert id="saveRole" parameterType="com.korit.library.web.dto.UserDto">
         insert into role_dtl
         values (0, #{userId}, 1, now(), now())
