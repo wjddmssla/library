@@ -67,7 +67,8 @@ public class AccountApi {
             log.info("로그인된 사용자의 권한: {}", role.getAuthority());
         });
 
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Success", principalDetails));
     }
 }

@@ -32,16 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/mypage/**", "/security/**")
                 .authenticated()
+                .antMatchers("/admin/**")
+                .hasRole("ADMIN")   // ROLE_ADMIN, ROLE_MANAGER
                 .anyRequest()
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/account/login") //로그인 페이지 get 요청
-                .loginProcessingUrl("/account/login") //로그인 인증 post 요청
+                .loginPage("/account/login") // 로그인 페이지 get요청
+                .loginProcessingUrl("/account/login") // 로그인 인증 post 요청
                 .failureForwardUrl("/account/login/error")
 //                .successForwardUrl("/mypage")
                 .defaultSuccessUrl("/index");
-
     }
-
 }
+
