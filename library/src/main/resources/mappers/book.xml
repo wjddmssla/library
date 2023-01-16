@@ -75,7 +75,7 @@
             book_name = #{bookName},
             author = if(#{author} = '', null, #{author}),
             publisher = if(#{publisher} = '', null, #{publisher}),
-            publication_date = if(#{publicationDate}='', null, #{publicationDate}),
+            publication_date = if(#{publicationDate} = '', null, #{publicationDate}),
             category = #{category}
         where
             book_code = #{bookCode}
@@ -85,15 +85,28 @@
         update book_mst
         set
             book_name = #{bookName},
-            <if test='author != null'>author=if(#{author} = '', null, #{author}),</if>
-            <if test='publisher != null'>publisher=if(#{publisher} = '', null, #{publisher}),</if>
-            <if test='publicationDate != null'>publication_date=if(#{publicationDate} = '', null, #{publicationDate})</if>
-            author = if(#{author} = '', null, #{author}),
-            publisher = if(#{publisher} = '', null, #{publisher}),
-            publication_date = if(#{publicationDate}='', null, #{publicationDate}),
+            <if test='author != null and author != ""'>author = #{author},</if>
+            <if test='publisher != null and publisher != ""'>publisher = #{publisher},</if>
+            <if test='publicationDate != null'>publication_date = #{publicationDate},</if>
             category = #{category}
         where
             book_code = #{bookCode}
-    </update>
 
+    </update>
+    
+    <delete id="deleteBook">
+        delete
+        from
+            book_mst
+        where
+            book_code = #{bookCode}
+    </delete>
+
+    <insert id="registerBookImages" parameterType="list">
+        insert into book_image
+        values
+            <foreach collection="list" item="file" separator=",">
+                (0, #{file.bookCode}, #{file.saveName}, #{file.originName})
+            </foreach>
+    </insert>
 </mapper>

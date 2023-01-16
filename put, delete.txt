@@ -1,0 +1,12 @@
+<DB>
+name = "kji"
+age = 30
+
+
+putMapping() 빈값, null값 전부 다 수정 O
+name = ""
+age = ""
+
+deleteMapping() 빈값, null값 전부 다 수정 X
+name = "kji"
+age = 30
