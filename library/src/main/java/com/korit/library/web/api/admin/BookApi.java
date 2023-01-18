@@ -19,6 +19,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.validation.Valid;
 import java.util.List;
 
+
 @Api(tags = {"관리자 도서관리 API"})
 @RequestMapping("/api/admin")
 @RestController
@@ -34,7 +35,6 @@ public class BookApi {
         return ResponseEntity
                 .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", bookService.searchBook(searchReqDto)));
-
     }
 
     @GetMapping("/categories")
@@ -60,7 +60,7 @@ public class BookApi {
     public ResponseEntity<CMRespDto<?>> modifyBook(@PathVariable String bookCode, @Valid @RequestBody BookReqDto bookReqDto, BindingResult bindingResult) {
         bookService.modifyBook(bookReqDto);
         return ResponseEntity
-                .created(null)
+                .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", true));
     }
 
@@ -68,9 +68,10 @@ public class BookApi {
     @ValidAspect
     @PatchMapping("/book/{bookCode}")
     public ResponseEntity<CMRespDto<?>> maintainModifyBook(@PathVariable String bookCode, @Valid @RequestBody BookReqDto bookReqDto, BindingResult bindingResult) {
-        bookService.modifyBook(bookReqDto);
+        bookService.maintainModifyBook(bookReqDto);
+
         return ResponseEntity
-                .created(null)
+                .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", true));
     }
 
@@ -86,10 +87,30 @@ public class BookApi {
     @ParamsAspect
     @PostMapping("/book/{bookCode}/images")
     public ResponseEntity<CMRespDto<?>> registerBookImg(@PathVariable String bookCode, @RequestPart List<MultipartFile> files) {
-        bookService.registerBookImage(bookCode, files);
+        bookService.registerBookImages(bookCode, files);
         return ResponseEntity.ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", true));
+    }
 
+    @ParamsAspect
+    @GetMapping("/book/{bookCode}/images")
+    public ResponseEntity<CMRespDto<List<BookImageDto>>> getImages (@PathVariable String bookCode) {
+        List<BookImageDto> bookImageDtos = bookService.getBooks(bookCode);
+        return ResponseEntity.ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", bookImageDtos));
+    }
+
+    @DeleteMapping("/book/{bookCode}/image/{imageId}")
+    public ResponseEntity<CMRespDto<?>> removeBookImg(
+            @PathVariable String bookCode,
+            @PathVariable int imageId) {
+
+        bookService.removeBookImage(imageId);
+
+        return ResponseEntity
+                .ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", null));
     }
 
 }
+

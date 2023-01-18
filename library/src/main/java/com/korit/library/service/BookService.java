@@ -33,7 +33,7 @@ public class BookService {
         return bookRepository.findAllCategory();
     }
 
-    public void registerBook(BookReqDto bookReqDto){
+    public void registerBook(BookReqDto bookReqDto) {
         duplicateBookCode(bookReqDto.getBookCode());
         bookRepository.saveBook(bookReqDto);
     }
@@ -60,10 +60,10 @@ public class BookService {
         bookRepository.deleteBook(bookCode);
     }
 
-    public void registerBookImage(String bookCode, List<MultipartFile> files) {
-        if(files.size() > 0) {
+    public void registerBookImages(String bookCode, List<MultipartFile> files) {
+        if(files.size() < 1) {
             Map<String, String> errorMap = new HashMap<String, String>();
-            errorMap.put("files", "이미지를 선택하세요");
+            errorMap.put("files", "이미지를 선택하세요.");
 
             throw new CustomValidationException(errorMap);
         }
@@ -75,9 +75,9 @@ public class BookService {
             String extension = originFileName.substring(originFileName.lastIndexOf("."));
             String tempFileName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
 
-            Path uploadPath = Paths.get(filePath + "/book/" + tempFileName);
+            Path uploadPath = Paths.get(filePath + "book/" + tempFileName);
 
-            File f = new File(filePath + "/book");
+            File f = new File(filePath + "book");
             if(!f.exists()) {
                 f.mkdirs();
             }
@@ -98,5 +98,27 @@ public class BookService {
         });
 
         bookRepository.registerBookImages(bookImageDtos);
+
+    }
+
+    public List<BookImageDto> getBooks(String bookCode) {
+        return bookRepository.findBookImageAll(bookCode);
+    }
+
+    public void removeBookImage(int imageId) {
+        BookImageDto bookImageDto = bookRepository.findBookImageByImageId(imageId);
+
+        if(bookImageDto == null) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "존재하지 않는 이미지 파일입니다.");
+
+            throw new CustomValidationException(errorMap);
+        }
+        if(bookRepository.deleteBookImage(imageId) > 0) {
+            File file = new File(filePath + "book/" + bookImageDto.getSaveName());
+            if(file.exists()) {
+                file.delete();
+            }
+        }
     }
 }
