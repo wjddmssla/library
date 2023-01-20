@@ -1,7 +1,7 @@
 package com.korit.library.aop;
 
 import com.korit.library.exception.CustomValidationException;
-import com.korit.library.web.dto.UserDto;
+import com.korit.library.entity.UserMst;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,7 +29,7 @@ public class ValidationAop {
         for(Object arg : args) {
             if(arg.getClass() == BeanPropertyBindingResult.class) {
                 bindingResult = (BeanPropertyBindingResult) arg;
-            }else if(arg.getClass() == UserDto.class) {
+            }else if(arg.getClass() == UserMst.class) {
                 System.out.println(arg);
             }
         }
