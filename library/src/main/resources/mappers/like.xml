@@ -12,19 +12,19 @@
     <delete id="deleteLike" parameterType="com.korit.library.entity.BookLike">
         delete
         from
-            book_like
+        book_like
         where
-            book_id = #{bookId}
+        book_id = #{bookId}
         and user_id = #{userId}
     </delete>
 
     <select id="getLikeStatus" resultType="Integer" parameterType="com.korit.library.entity.BookLike">
         select
-            count(*)
+        count(*)
         from
-            book_like
+        book_like
         where
-            book_id = #{bookId}
+        book_id = #{bookId}
         and user_id = #{userId}
     </select>
 </mapper>
