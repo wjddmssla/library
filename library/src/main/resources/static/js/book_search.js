@@ -1,5 +1,5 @@
 window.onload = () => {
-    
+    BookService.getInstance().loadBookList();
 }
 
 let searchObj = {
@@ -30,6 +30,7 @@ class BookSearchApi {
             url: "http://127.0.0.1:8000/api/admin/books",
             dataType: "json",
             success: response => {
+                console.log(response);
                 returnData = response.data;
             },
             error: error => {
@@ -47,6 +48,10 @@ class BookService {
             this.#instance = new BookService();
         }
         return this.#instance
+    }
+
+    loadBookList() {
+        const responseData = BookSearchApi.getInstance().getBookList(searchObj);
     }
 
 

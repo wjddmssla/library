@@ -16,4 +16,5 @@ public class RentalDtl {
     private int rentalId;
     private int bookId;
     private LocalDateTime returnDate;
+
 }
