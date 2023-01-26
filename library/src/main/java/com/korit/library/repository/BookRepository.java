@@ -6,6 +6,7 @@ import com.korit.library.entity.CategoryView;
 import com.korit.library.web.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.security.SecureRandom;
 import java.util.List;
 
 @Mapper
@@ -27,6 +28,7 @@ public interface BookRepository {
     D: 도서삭제
      */
 
+    public int getBookTotalCount(SearchNumberListReqDto searchNumberListReqDto);
     public List<BookMst> searchBook(SearchReqDto searchReqDto);
     public BookMst findBookByBookCode(String bookCode);
 
@@ -41,6 +43,6 @@ public interface BookRepository {
 
     public int registerBookImages(List<BookImage> bookImages);
     public List<BookImage> findBookImageAll(String bookCode);
-    public BookImage findBookImageByImageId(int iamgeId);
+    public BookImage findBookImageByImageId(int imageId);
     public int deleteBookImage(int imageId);
 }
