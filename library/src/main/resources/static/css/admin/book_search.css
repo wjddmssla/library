@@ -36,13 +36,14 @@
 }
 
 .delete-button {
-    border: 1px solid #ff9808;
+    border: 1px solid #ff9500;
     padding: 5px 10px;
+    color: #623900;
 }
 
 .delete-button:hover {
-    background-color: #ff9808;
-    color: white
+    background-color: #ff9500;
+    color: white;
 }
 
 .table-container {
