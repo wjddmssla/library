@@ -3,6 +3,7 @@ window.onload = () => {
     BookService.getInstance().loadCategories();
     ComponentEvent.getInstance().addClickEventSearchButton();
     ComponentEvent.getInstance().addClickEventDeleteButton();
+    ComponentEvent.getInstance().addClickEventDeleteCheckAll();
 }
 
 let searchObj = {
@@ -124,7 +125,9 @@ class BookService {
 
     loadBookList() {
         const responseData = BookSearchApi.getInstance().getBookList(searchObj);
-
+        const checkAll = document.querySelector(".delete-checkall");
+        checkAll.checked = false;
+        
         const bookListBody = document.querySelector(".content-table tbody");
         bookListBody.innerHTML = "";
 
@@ -146,6 +149,7 @@ class BookService {
         });
 
         this.loadSearchNumberList();
+        ComponentEvent.getInstance().addClickEventDeleteCheckbox();
     }
 
     loadSearchNumberList() {
@@ -275,5 +279,34 @@ class ComponentEvent {
                 BookService.getInstance().removeBooks(deleteArray);
             }
         }
+    }
+
+    addClickEventDeleteCheckAll() {
+        const checkAll = document.querySelector(".delete-checkall");
+        checkAll.onclick = () => {
+            const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+            deleteCheckboxs.forEach(deleteCheckbox => {
+                deleteCheckbox.checked = checkAll.checked;
+                
+            });
+        }
+    }
+
+    addClickEventDeleteCheckbox() {
+        const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+        const checkAll = document.querySelector(".delete-checkall");
+
+        deleteCheckboxs.forEach(deleteCheckbox => {
+
+            deleteCheckbox.onclick = () => {
+                const deleteCheckedCheckboxs = document.querySelectorAll(".delete-checkbox: checked");
+
+                if(deleteCheckedCheckboxs.length = deleteCheckboxs.length) {
+                    checkAll.checked=true;
+                }else {
+                    checkAll.checked=false;
+                }
+            }
+        })
     }
 }
