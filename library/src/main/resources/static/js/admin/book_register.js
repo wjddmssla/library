@@ -1,5 +1,6 @@
 window.onload = () => {
-    ComponentEvent.getInstance().addClickEventRegisterButton()
+
+    ComponentEvent.getInstance().addClickEventRegisterButton();
 
     ComponentEvent.getInstance().addClickEventImgAddButton();
     ComponentEvent.getInstance().addChangeEventImgFile();
@@ -28,8 +29,10 @@ class ImgFileService {
         }
 
         reader.readAsDataURL(fileObj.files[0]);
+
     }
 }
+
 
 class ComponentEvent {
     static #instance = null;
@@ -43,15 +46,18 @@ class ComponentEvent {
     addClickEventRegisterButton() {
         const registerButton = document.querySelector(".register-button");
 
-        if(confirm("도서 이미지를 등록하시겠습니까??")) {
-            const imgAddButton = document.querySelector(".img-add-button");
-            const imgRegisterButton = document.querySelector(".img-register-button");
-
-            imgAddButton.disabled = false;
-            imgRegisterButton.disabled = false;
-        }else {
-            location.reload();
+        registerButton.onclick = () => {
+            if(confirm("도서 이미지를 등록하시겠습니까?")) {
+                const imgAddButton = document.querySelector(".img-add-button");
+                const imgRegisterButton = document.querySelector(".img-register-button");
+    
+                imgAddButton.disabled = false;
+                imgRegisterButton.disabled = false;
+            }else {
+                location.reload();
+            }
         }
+
     }
 
     addClickEventImgAddButton() {
@@ -85,6 +91,7 @@ class ComponentEvent {
                 ImgFileService.getInstance().getImgPreview();
                 imgFile.value = null;
             }
+
         }
     }
 }
