@@ -20,7 +20,7 @@ const bookObj = {
 }
 
 const imgObj = {
-    imgId: null,
+    imageId: null,
     bookCode: null,
     saveName: null,
     originName: null
@@ -40,24 +40,24 @@ class BookModificationApi {
         return this.#instance;
     }
 
-getBookAndImage() {
-    let responseData = null;
+    getBookAndImage() {
+        let responseData = null;
 
-    $.ajax({
-        async: false,
-        type: "get",
-        url: `http://127.0.0.1:8000/api/admin/book/${bookObj.bookCode}`,
-        dataType: "json",
-        success: response => {
-            responseData = response.data;
-        },
-        error:error=> {
-            console.log(error);
-        }
-    });
+        $.ajax({
+            async: false,
+            type: "get",
+            url: `http://127.0.0.1:8000/api/admin/book/${bookObj.bookCode}`,
+            dataType: "json",
+            success: response => {
+                responseData = response.data;
+            },
+            error: error => {
+                console.log(error);
+            }
+        });
 
-    return responseData;
-}
+        return responseData;
+    }
 
     getCategories() {
         let responseData = null;
@@ -85,13 +85,13 @@ getBookAndImage() {
             async: false,
             type: "put",
             url: `http://127.0.0.1:8000/api/admin/book/${bookObj.bookCode}`,
-            ContentType: "application/json",
+            contentType: "application/json",
             data: JSON.stringify(bookObj),
             dataType: "json",
             success: response => {
                 successFlag = true;
             },
-            error: error=> {
+            error: error => {
                 console.log(error);
                 BookModificationService.getInstance().setErrors(error.responseJSON.data);
             }
@@ -101,6 +101,8 @@ getBookAndImage() {
     }
 
     removeImg() {
+        let successFlag = false;
+
         $.ajax({
             async: false,
             type: "delete",
@@ -137,7 +139,6 @@ getBookAndImage() {
             }
         })
     }
-
 
 }
 
@@ -183,17 +184,15 @@ class BookModificationService {
         modificationInputs[4].value = responseData.bookMst.publicationDate;
         modificationInputs[5].value = responseData.bookMst.category;
 
-        if(responseData.bookImage != null) {
+        if(responseData.bookImage != null){
             imgObj.imageId = responseData.bookImage.imageId;
             imgObj.bookCode = responseData.bookImage.bookCode;
             imgObj.saveName = responseData.bookImage.saveName;
             imgObj.originName = responseData.bookImage.originName;
 
-
             const bookImg = document.querySelector(".book-img");
             bookImg.src = `http://127.0.0.1:8000/image/book/${responseData.bookImage.saveName}`;
         }
-
     }
 
     loadCategories() {
@@ -279,7 +278,7 @@ class ComponentEvent {
 
             BookModificationService.getInstance().clearErrors();
 
-            if(confirm("도서 이미지를 등록하시겠습니까?")) {
+            if(confirm("도서 이미지를 수정하시겠습니까?")) {
                 const imgAddButton = document.querySelector(".img-add-button");
                 const imgCancelButton = document.querySelector(".img-cancel-button");
     
@@ -338,14 +337,14 @@ class ComponentEvent {
 
             let successFlag = true;
 
-            if(imgObj.imageId != null){
+            if(imgObj.imageId != null) {
                 successFlag = BookModificationApi.getInstance().removeImg();
             }
 
             if(successFlag) {
-                BookModificationApi.getInstance().modificationImg();
+                BookModificationApi.getInstance().registerImg();
             }
-
+            
         }
     }
 
@@ -353,7 +352,7 @@ class ComponentEvent {
         const imgCancelButton = document.querySelector(".img-cancel-button");
 
         imgCancelButton.onclick = () => {
-            if(confirm("정말로 이미지 등록을 취소하시겠습니까?")) {
+            if(confirm("정말로 이미지 수정을 취소하시겠습니까?")) {
                 location.reload();
             }
         }
