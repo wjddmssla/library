@@ -98,7 +98,9 @@ class BookSearchApi {
             url: "http://127.0.0.1:8000/api/admin/books",
             contentType: "application/json",
             data: JSON.stringify(
-                {userIds: deleteArray}
+                {
+                    userIds: deleteArray
+                }
             ),
             dataType: "json",
             success: response => {
@@ -127,7 +129,7 @@ class BookService {
         const responseData = BookSearchApi.getInstance().getBookList(searchObj);
         const checkAll = document.querySelector(".delete-checkall");
         checkAll.checked = false;
-        
+
         const bookListBody = document.querySelector(".content-table tbody");
         bookListBody.innerHTML = "";
 
@@ -143,7 +145,7 @@ class BookService {
                     <td>${data.publicationDate}</td>
                     <td>${data.category}</td>
                     <td>${data.rentalStatus == "Y" ? "대여중" : "대여가능"}</td>
-                    <td><i class="fa-solid fa-square-pen"></i></td>
+                    <td><a href="/templates/admin/book_modification.html?bookCode=${data.bookCode}"><i class="fa-solid fa-square-pen"></i></td>
                 </tr>
             `;
         });
@@ -269,6 +271,7 @@ class ComponentEvent {
                 const deleteArray = new Array();
     
                 const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+
                 deleteCheckboxs.forEach((deleteCheckbox, index) => {
                     if(deleteCheckbox.checked) {
                         const bookIds = document.querySelectorAll(".book-id");
@@ -287,7 +290,6 @@ class ComponentEvent {
             const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
             deleteCheckboxs.forEach(deleteCheckbox => {
                 deleteCheckbox.checked = checkAll.checked;
-                
             });
         }
     }
@@ -297,16 +299,15 @@ class ComponentEvent {
         const checkAll = document.querySelector(".delete-checkall");
 
         deleteCheckboxs.forEach(deleteCheckbox => {
-
             deleteCheckbox.onclick = () => {
-                const deleteCheckedCheckboxs = document.querySelectorAll(".delete-checkbox: checked");
+                const deleteCheckedCheckboxs = document.querySelectorAll(".delete-checkbox:checked");
 
-                if(deleteCheckedCheckboxs.length = deleteCheckboxs.length) {
-                    checkAll.checked=true;
+                if(deleteCheckedCheckboxs.length == deleteCheckboxs.length) {
+                    checkAll.checked = true;
                 }else {
-                    checkAll.checked=false;
+                    checkAll.checked = false;
                 }
             }
-        })
+        });
     }
 }

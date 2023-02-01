@@ -27,9 +27,18 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    public Map<String, Object> getBookAndImage(String bookCode) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("bookMst", bookRepository.findBookByBookCode(bookCode));
+        result.put("bookImage", bookRepository.findBookImageByBookCode(bookCode));
+
+        return result;
+    }
+
     public int getBookTotalCount(SearchNumberListReqDto searchNumberListReqDto) {
         return bookRepository.getBookTotalCount(searchNumberListReqDto);
     }
+
 
     public List<BookMst> searchBook(SearchReqDto searchReqDto) {
         searchReqDto.setIndex();
@@ -109,7 +118,6 @@ public class BookService {
         });
 
         bookRepository.registerBookImages(bookImages);
-
     }
 
     public List<BookImage> getBooks(String bookCode) {
@@ -121,10 +129,11 @@ public class BookService {
 
         if(bookImage == null) {
             Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "존재하지 않는 이미지 파일입니다.");
+            errorMap.put("error", "존재하지 않는 이미지 ID입니다.");
 
             throw new CustomValidationException(errorMap);
         }
+
         if(bookRepository.deleteBookImage(imageId) > 0) {
             File file = new File(filePath + "book/" + bookImage.getSaveName());
             if(file.exists()) {

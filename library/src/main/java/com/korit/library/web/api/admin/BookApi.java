@@ -5,8 +5,8 @@ import com.korit.library.aop.annotation.ValidAspect;
 import com.korit.library.entity.BookImage;
 import com.korit.library.entity.BookMst;
 import com.korit.library.entity.CategoryView;
-import com.korit.library.service.BookService;
 import com.korit.library.web.dto.*;
+import com.korit.library.service.BookService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,17 +16,26 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 @Api(tags = {"관리자 도서관리 API"})
 @RequestMapping("/api/admin")
 @RestController
-//@CrossOrigin(origins = "http://127.0.0.1:5500/")
+//@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class BookApi {
 
     @Autowired
     private BookService bookService;
+
+    @GetMapping("/book/{bookCode}")
+    public ResponseEntity<CMRespDto<Map<String, Object>>> getBook(@PathVariable String bookCode) {
+
+        return ResponseEntity
+                .ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", bookService.getBookAndImage(bookCode)));
+    }
 
     @ParamsAspect
     @ValidAspect
@@ -109,8 +118,16 @@ public class BookApi {
     }
 
     @ParamsAspect
+    @PostMapping("/book/{bookCode}/images/modification")
+    public ResponseEntity<CMRespDto<?>> modifyBookImg(@PathVariable String bookCode, @RequestPart List<MultipartFile> files) {
+        bookService.registerBookImages(bookCode, files);
+        return ResponseEntity.ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", true));
+    }
+
+    @ParamsAspect
     @GetMapping("/book/{bookCode}/images")
-    public ResponseEntity<CMRespDto<List<BookImage>>> getImages (@PathVariable String bookCode) {
+    public ResponseEntity<CMRespDto<List<BookImage>>> getImages(@PathVariable String bookCode) {
         List<BookImage> bookImages = bookService.getBooks(bookCode);
         return ResponseEntity.ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", bookImages));
@@ -125,8 +142,7 @@ public class BookApi {
 
         return ResponseEntity
                 .ok()
-                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", null));
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully" ,null));
     }
 
 }
-
