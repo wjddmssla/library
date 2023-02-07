@@ -1,14 +1,10 @@
 package com.korit.library.web.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class SearchBookReqDto {
     private int page;
@@ -17,10 +13,11 @@ public class SearchBookReqDto {
     private int count;
     private int userId;
 
-    @ApiModelProperty(hidden=true)
+    @ApiModelProperty(hidden = true)
     private int index;
 
     public void setIndex() {
-        index = (page -1) * count;
+        index = (page - 1) * count;
     }
+
 }

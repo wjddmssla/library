@@ -6,7 +6,6 @@ import com.korit.library.web.dto.CMRespDto;
 import com.korit.library.web.dto.SearchBookReqDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

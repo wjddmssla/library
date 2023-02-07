@@ -55,25 +55,25 @@
             left outer join book_like bl
             on(bl.book_id = bm.book_id and bl.user_id = '2')
             left outer join (select
-            book_id,
-            count(book_id) as like_count
-        from
-            book_like
-            group by
-            book_id) lc on(lc.book_id = bm.book_id)
+                                book_id,
+                                count(book_id) as like_count
+                            from
+                                book_like
+                            group by
+                                book_id) lc on(lc.book_id = bm.book_id)
         where
-            1 = 1
-            <if test="searchValue != null and searchValue != ''">
-                (bm.book_name like concat('%', #{searchValue} ,'%')
-                or	bm.author like concat('%', #{searchValue} ,'%')
-                or	bm.publisher like concat('%', #{searchValue} ,'%'))
-            </if>
-            <if test='categories != null'>
-                and	bm.category in
-                <foreach collection="categories" item="categoryName" open="(" close=")" separator=",">
-                    #{categoryName}
-                </foreach>
-            </if>
+        1 = 1
+        <if test="searchValue != null and searchValue != ''">
+            (bm.book_name like concat('%', #{searchValue} ,'%')
+            or	bm.author like concat('%', #{searchValue} ,'%')
+            or	bm.publisher like concat('%', #{searchValue} ,'%'))
+        </if>
+        <if test='categories != null'>
+            and	bm.category in
+            <foreach collection="categories" item="categoryName" open="(" close=")" separator=",">
+                #{categoryName}
+            </foreach>
+        </if>
 
         limit #{index}, #{count};
     </select>

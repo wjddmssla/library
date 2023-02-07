@@ -28,29 +28,29 @@
 
     <select id="searchBook" parameterType="com.korit.library.web.dto.SearchReqDto" resultType="com.korit.library.entity.BookMst">
         SELECT
-        bm.book_id as bookId,
-        bm.book_code as bookCode,
-        bm.book_name as bookName,
-        bm.author,
-        bm.publisher,
-        bm.publication_date as publicationDate,
-        bm.category,
-        rd.rentalStatus
+            bm.book_id as bookId,
+            bm.book_code as bookCode,
+            bm.book_name as bookName,
+            bm.author,
+            bm.publisher,
+            bm.publication_date as publicationDate,
+            bm.category,
+            rd.rentalStatus
         from
-        book_mst bm
-        left outer join (select
-        rd1.book_id,
-        if(rd2.return_date is null, 'Y', 'N') as rentalStatus
-        from
-        (select
-        max(rental_dtl_id) as rental_dtl_id,
-        book_id
-        from
-        rental_dtl
-        group by
-        book_id) rd1
-        left outer join rental_dtl rd2 on(rd2.rental_dtl_id = rd1.rental_dtl_id)) rd
-        on(rd.book_id = bm.book_id)
+            book_mst bm
+            left outer join (select
+                                rd1.book_id,
+                                if(rd2.return_date is null, 'Y', 'N') as rentalStatus
+                            from
+                                (select
+                                    max(rental_dtl_id) as rental_dtl_id,
+                                    book_id
+                                from
+                                    rental_dtl
+                                group by
+                                    book_id) rd1
+                                    left outer join rental_dtl rd2 on(rd2.rental_dtl_id = rd1.rental_dtl_id)) rd
+                                    on(rd.book_id = bm.book_id)
         where
         1 = 1
         <if test='searchValue != null and searchValue != ""'>
