@@ -34,8 +34,8 @@ class HeaderService {
                     <li><a href="/logout">로그아웃</a></li>
                     `
                 }
-                
             </ul>
         `;
     }
+
 }

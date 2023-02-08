@@ -7,7 +7,7 @@ window.onload = () => {
 }
 
 let searchObj = {
-    page : 1,
+    page : 2,
     category : "",
     searchValue : "",
     order : "bookId",

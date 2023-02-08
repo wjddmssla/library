@@ -20,7 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("*");
     }
 
     @Override
@@ -29,7 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/image/**")
                 .addResourceLocations("file:///" + filePath)
                 .resourceChain(true)
-                .addResolver(new PathResourceResolver(){
+                .addResolver(new PathResourceResolver() {
                     @Override
                     protected Resource getResource(String resourcePath, Resource location) throws IOException {
                         resourcePath = URLDecoder.decode(resourcePath, StandardCharsets.UTF_8);

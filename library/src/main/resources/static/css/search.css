@@ -207,3 +207,11 @@
 .like-button {
     background-color: #e643d3;
 }
+
+.return-button{
+    background-color: rgb(50, 129, 240);
+}
+
+.dislike-button{
+    background-color: rgb(102, 0, 255);
+}
