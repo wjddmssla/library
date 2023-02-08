@@ -9,6 +9,8 @@ window.onload = () => {
     ComponentEvent.getInstance().addClickEventCategoryCheckboxs();
     ComponentEvent.getInstance().addScrollEventPaging();
     ComponentEvent.getInstance().addClickEventSearchButton();
+
+    SearchService.getInstance().onLoadSearch();
 }
 
 let maxPage = 0;
@@ -99,11 +101,25 @@ class SearchService {
         return this.#instance;
     }
 
+    onLoadSearch() {
+        const URLSearch = new URLSearchParams(location.search);
+        if(URLSearch.has("searchValue")) {
+            const searchValue = URLSearch.get("searchValue");
+            const searchInput = document.querySelector(".search-input");
+            searchInput.value = searchValue;
+            const searchButton = document.querySelector(".search-button");
+            searchButton.click();
+
+        }
+        
+    }
+
     setMaxPage() {
         const totalCount = SearchApi.getInstance().getTotalCount();
         maxPage = totalCount % 10 == 0 
             ? totalCount / 10 
-            : Math.floor(totalCount/10) + 1;
+            : Math.floor(totalCount / 10) + 1;
+
     }
 
     loadCategories() {
@@ -135,7 +151,7 @@ class SearchService {
                 <div class="info-container">
                     <div class="book-desc">
                         <div class="img-container">
-                            <img src="http://127.0.0.1:8000/image/book/${data.saveName != null ? data.saveName : "no_image.png"}" class="book-img">
+                            <img src="http://127.0.0.1:8000/image/book/${data.saveName != null ? data.saveName : "no_img.png"}" class="book-img">
                         </div>
                         <div class="like-info"><i class="fa-regular fa-thumbs-up"></i> <span class="like-count">${data.likeCount != null ? data.likeCount : 0}</span></div>
                     </div>
@@ -156,7 +172,6 @@ class SearchService {
             `;
         })
     }
-
 }
 
 class ComponentEvent {
@@ -179,7 +194,7 @@ class ComponentEvent {
                     const index = searchObj.categories.indexOf(checkbox.value);
                     searchObj.categories.splice(index, 1);
                 }
-                document.querySelector(".search-button").onclick();
+                document.querySelector(".search-button").click();
             }
         });
     }
@@ -201,7 +216,7 @@ class ComponentEvent {
     addClickEventSearchButton() {
         const searchButton = document.querySelector(".search-button");
         const searchInput = document.querySelector(".search-input");
-        
+
         searchButton.onclick = () => {
             searchObj.searchValue = searchInput.value;
             searchObj.page = 1;
@@ -216,5 +231,6 @@ class ComponentEvent {
                 searchButton.click();
             }
         }
+        
     }
 }
