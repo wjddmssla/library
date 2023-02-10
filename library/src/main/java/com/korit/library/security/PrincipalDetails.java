@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Getter
     private final UserMst user;
@@ -88,11 +89,22 @@ public class PrincipalDetails implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     /*
         사용자 활성화 연부
      */
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return user.getName();
+    }
+
+    @Override
+    public Map<String, java.lang.Object> getAttributes() {
+        return null;
     }
 }
